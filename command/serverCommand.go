@@ -3,6 +3,8 @@ package command
 import (
 	"flag"
 	"fmt"
+	"html"
+	"net/http"
 
 	"github.com/mitchellh/cli" // command and subcommand commandline management
 )
@@ -42,9 +44,27 @@ func (c *serverCommand) Run(args []string) int {
 	}
 
 	c.UI.Output(fmt.Sprintf("Running server https://127.0.0.1:%d", c.HttpPort))
+
+	http.HandleFunc("/", uiHandler)
+	http.HandleFunc("/ui", uiHandler)
+	http.HandleFunc("/v1", restHandler)
+	if err := http.ListenAndServe(":9443", nil); err != nil {
+		return 1
+	}
 	return 0
 }
 
 func (c *serverCommand) Synopsis() string {
 	return "delete master key"
+}
+
+func uiHandler(w http.ResponseWriter, r *http.Request) {
+	msg := fmt.Sprintf(`Hello, %q<br>
+	<a href="http://localhost:9443/ui">http://localhost:9443/ui></a><br>
+	<a href="http://localhost:9443/v1">http://localhost:9443/v1></a>`, html.EscapeString(r.URL.Path))
+	fmt.Fprintf(w, "<html><body><h1>%s</h1></body></html>", msg)
+}
+
+func restHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "{\"message\":\"Hi there\"}")
 }
