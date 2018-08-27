@@ -65,6 +65,16 @@ func Run(args []string) int {
 				HttpPort: 9443,
 			}, nil
 		},
+		"class": func() (cli.Command, error) {
+			return &classCommand{
+				UI: coloredUI(),
+			}, nil
+		},
+		"class enable": func() (cli.Command, error) {
+			return &classEnableCommand{
+				UI: coloredUI(),
+			}, nil
+		},
 	}
 
 	exitStatus, err := c.Run()

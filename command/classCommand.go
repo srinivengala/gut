@@ -10,14 +10,14 @@ type classCommand struct {
 }
 
 func (c *classCommand) Help() string {
-	return "displays gut directory tree for enabled classes of files"
+	return "manage file class flags.\nOnly enabled file classes are allowed to be accessed."
 }
 
 func (c *classCommand) Run(args []string) int {
-	c.UI.Output("Running tree ...")
+	c.UI.Output("Running class ...")
 	return 0 //return cli.RunResultHelp to show help and exit
 }
 
 func (c *classCommand) Synopsis() string {
-	return "show enabled class files as direcory tree"
+	return "manage file class"
 }
