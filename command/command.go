@@ -54,6 +54,17 @@ func Run(args []string) int {
 				},
 			}, nil
 		},
+		"kill": func() (cli.Command, error) {
+			return &killCommand{
+				UI: coloredUI(),
+			}, nil
+		},
+		"server": func() (cli.Command, error) {
+			return &serverCommand{
+				UI:       coloredUI(),
+				HttpPort: 9443,
+			}, nil
+		},
 	}
 
 	exitStatus, err := c.Run()
