@@ -1,0 +1,87 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "ZWu+JUivE3zS4FZvVktFAWhj3FQ=",
+			"path": "github.com/armon/go-radix",
+			"revision": "1a2de0c21c94309923825da3df33a4381872c795",
+			"revisionTime": "2018-08-24T02:57:28Z"
+		},
+		{
+			"checksumSHA1": "oTmBS67uxM6OXB/+OJUAG9LK4jw=",
+			"path": "github.com/bgentry/speakeasy",
+			"revision": "4aabc24848ce5fd31929f7d1e4ea74d3709c14cd",
+			"revisionTime": "2017-04-17T20:07:03Z"
+		},
+		{
+			"checksumSHA1": "HbOJxa+FsQ1TTsF+BkHAvzqqZv4=",
+			"path": "github.com/fatih/color",
+			"revision": "2d684516a8861da43017284349b7e303e809ac21",
+			"revisionTime": "2018-05-16T10:03:07Z"
+		},
+		{
+			"checksumSHA1": "ByRdQMv2yl16W6Tp9gUW1nNmpuI=",
+			"path": "github.com/hashicorp/errwrap",
+			"revision": "8a6fb523712970c966eefc6b39ed2c5e74880354",
+			"revisionTime": "2018-08-24T00:39:10Z"
+		},
+		{
+			"checksumSHA1": "cFcwn0Zxefithm9Q9DioRNcGbqg=",
+			"path": "github.com/hashicorp/go-multierror",
+			"revision": "886a7fbe3eb1c874d46f623bfa70af45f425b3d1",
+			"revisionTime": "2018-08-24T00:40:42Z"
+		},
+		{
+			"checksumSHA1": "XEV3BI3nHA/rNa/tIgB7fVCrDww=",
+			"origin": "github.com/fatih/color/vendor/github.com/mattn/go-colorable",
+			"path": "github.com/mattn/go-colorable",
+			"revision": "2d684516a8861da43017284349b7e303e809ac21",
+			"revisionTime": "2018-05-16T10:03:07Z"
+		},
+		{
+			"checksumSHA1": "w5RcOnfv5YDr3j2bd1YydkPiZx4=",
+			"path": "github.com/mattn/go-isatty",
+			"revision": "6ca4dbf54d38eea1a992b3c722a76a5d1c4cb25c",
+			"revisionTime": "2017-11-07T05:05:31Z"
+		},
+		{
+			"checksumSHA1": "fgd40uACm+f6nmSUC+R9A9NtwGY=",
+			"path": "github.com/mitchellh/cli",
+			"revision": "3d22a244be8aa6fb16ac24af0e195c08b7d973aa",
+			"revisionTime": "2018-08-24T00:41:14Z"
+		},
+		{
+			"checksumSHA1": "eKclqCehbe7JsvlemLF7TfjMWf0=",
+			"path": "github.com/posener/complete",
+			"revision": "dcda3199365ca2a5f24aea4c42aa56f6a197d117",
+			"revisionTime": "2018-08-23T21:21:02Z"
+		},
+		{
+			"checksumSHA1": "tTZdbCXe+5kV35vEhVIJVD4kh8Q=",
+			"path": "github.com/posener/complete/cmd",
+			"revision": "dcda3199365ca2a5f24aea4c42aa56f6a197d117",
+			"revisionTime": "2018-08-23T21:21:02Z"
+		},
+		{
+			"checksumSHA1": "llSE1833yASSLHfDuN7lKx48020=",
+			"path": "github.com/posener/complete/cmd/install",
+			"revision": "dcda3199365ca2a5f24aea4c42aa56f6a197d117",
+			"revisionTime": "2018-08-23T21:21:02Z"
+		},
+		{
+			"checksumSHA1": "DMo94FwJAm9ZCYCiYdJU2+bh4no=",
+			"path": "github.com/posener/complete/match",
+			"revision": "dcda3199365ca2a5f24aea4c42aa56f6a197d117",
+			"revisionTime": "2018-08-23T21:21:02Z"
+		},
+		{
+			"checksumSHA1": "hEYaWw+8NP4vlt/idQaUfg3cWdM=",
+			"origin": "github.com/fatih/color/vendor/golang.org/x/sys/unix",
+			"path": "golang.org/x/sys/unix",
+			"revision": "2d684516a8861da43017284349b7e303e809ac21",
+			"revisionTime": "2018-05-16T10:03:07Z"
+		}
+	],
+	"rootPath": "github.com/srinivengala/gut"
+}
