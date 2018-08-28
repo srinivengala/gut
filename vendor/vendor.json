@@ -76,11 +76,29 @@
 			"revisionTime": "2018-08-23T21:21:02Z"
 		},
 		{
+			"checksumSHA1": "KXUHFmNxt6vTQkUJ00c+M/+dV58=",
+			"path": "github.com/sirupsen/logrus",
+			"revision": "51df1d314861d341546c26e4354ce760fe4bb02b",
+			"revisionTime": "2018-08-27T05:22:11Z"
+		},
+		{
+			"checksumSHA1": "BGm8lKZmvJbf/YOJLeL1rw2WVjA=",
+			"path": "golang.org/x/crypto/ssh/terminal",
+			"revision": "614d502a4dac94afa3a6ce146bd1736da82514c6",
+			"revisionTime": "2018-07-28T08:01:47Z"
+		},
+		{
 			"checksumSHA1": "hEYaWw+8NP4vlt/idQaUfg3cWdM=",
 			"origin": "github.com/fatih/color/vendor/golang.org/x/sys/unix",
 			"path": "golang.org/x/sys/unix",
 			"revision": "2d684516a8861da43017284349b7e303e809ac21",
 			"revisionTime": "2018-05-16T10:03:07Z"
+		},
+		{
+			"checksumSHA1": "apLcjhTfa/nKhpXTXjpfIZxVTKQ=",
+			"path": "golang.org/x/sys/windows",
+			"revision": "4910a1d54f876d7b22162a85f4d066d3ee649450",
+			"revisionTime": "2018-08-24T09:55:51Z"
 		}
 	],
 	"rootPath": "github.com/srinivengala/gut"

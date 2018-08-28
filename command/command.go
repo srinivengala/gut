@@ -1,11 +1,14 @@
 package command
 
 import (
-	"log"
 	"os"
+
+	"github.com/sirupsen/logrus"
 
 	"github.com/mitchellh/cli" // command and subcommand commandline management
 )
+
+var log = logrus.New()
 
 func basicUI() *cli.BasicUi {
 	return &cli.BasicUi{
@@ -36,6 +39,8 @@ func getCommandFactory() (cli.Command, error) {
 
 // Run executes commnads
 func Run(args []string) int {
+	log.Out = os.Stdout
+
 	c := cli.NewCLI("gut", "1.0.0")
 	c.Args = args[:]
 	c.Commands = map[string]cli.CommandFactory{
@@ -79,7 +84,7 @@ func Run(args []string) int {
 
 	exitStatus, err := c.Run()
 	if err != nil {
-		log.Println(err)
+		log.WithFields(logrus.Fields{"file": "command.go"}).Println(err)
 	}
 
 	return exitStatus
