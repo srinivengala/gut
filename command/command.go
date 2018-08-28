@@ -62,7 +62,7 @@ func Run(args []string) int {
 		"server": func() (cli.Command, error) {
 			return &serverCommand{
 				UI:       coloredUI(),
-				HttpPort: 9443,
+				HTTPPort: 9443,
 			}, nil
 		},
 		"class": func() (cli.Command, error) {

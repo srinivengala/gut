@@ -12,14 +12,14 @@ import (
 // implements interface cli.Command
 type serverCommand struct {
 	UI       cli.Ui // cli.Ui interface
-	HttpPort int
+	HTTPPort int
 }
 
 func (c *serverCommand) parsePort(args []string) error {
 	argflags := flag.NewFlagSet("server", flag.ContinueOnError)
 	argflags.Usage = func() { c.UI.Output(c.Help()) }
 
-	argflags.IntVar(&c.HttpPort, "port", 9443, "Port for server to listen")
+	argflags.IntVar(&c.HTTPPort, "port", 9443, "Port for server to listen")
 	if err := argflags.Parse(args); err != nil {
 		//return cli.RunResultHelp
 		return err
@@ -35,7 +35,7 @@ Options:
     port : default port %d
 
 Example:
-    gut server --port=9443`, c.HttpPort)
+    gut server --port=9443`, c.HTTPPort)
 }
 
 func (c *serverCommand) Run(args []string) int {
@@ -43,7 +43,7 @@ func (c *serverCommand) Run(args []string) int {
 		return 0
 	}
 
-	c.UI.Output(fmt.Sprintf("Running server https://127.0.0.1:%d", c.HttpPort))
+	c.UI.Output(fmt.Sprintf("Running server https://127.0.0.1:%d", c.HTTPPort))
 
 	http.HandleFunc("/", uiHandler)
 	http.HandleFunc("/ui", uiHandler)
