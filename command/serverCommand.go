@@ -1,6 +1,8 @@
 package command
 
 import (
+	"bytes"
+	"compress/gzip"
 	"flag"
 	"fmt"
 	"html"
@@ -55,7 +57,7 @@ func (c *serverCommand) Run(args []string) int {
 }
 
 func (c *serverCommand) Synopsis() string {
-	return "delete master key"
+	return "starts server"
 }
 
 func uiHandler(w http.ResponseWriter, r *http.Request) {
@@ -66,5 +68,31 @@ func uiHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func restHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "{\"message\":\"Hi there\"}")
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.Header().Set("Content-Encoding", "gzip")
+
+	writer, err := gzip.NewWriterLevel(w, gzip.BestCompression)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	defer writer.Close()
+
+	body := []byte("{\"message\":\"Hi there\"}")
+	if _, err := writer.Write(body); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	//fmt.Fprintf(w, &[]byte("{\"message\":\"Hi there\"}"))
+}
+
+func doGzip(a *[]byte) ([]byte, error) {
+	var b bytes.Buffer
+	gz, _ := gzip.NewWriterLevel(&b, gzip.BestSpeed)
+	defer gz.Close()
+	if _, err := gz.Write(*a); err != nil {
+		return nil, err
+	}
+	return b.Bytes(), nil
 }
