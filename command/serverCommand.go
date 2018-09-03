@@ -8,6 +8,9 @@ import (
 	"html"
 	"net/http"
 
+	"github.com/ant0ine/go-json-rest/rest"
+	"github.com/srinivengala/gut/api"
+
 	"github.com/mitchellh/cli" // command and subcommand commandline management
 )
 
@@ -47,9 +50,26 @@ func (c *serverCommand) Run(args []string) int {
 
 	c.UI.Output(fmt.Sprintf("Running server https://127.0.0.1:%d", c.HTTPPort))
 
+	restAPI := rest.NewApi()
+	//TODO api.Use(rest.DefaultProdStack...)
+	restAPI.Use(rest.DefaultDevStack...)
+
+	// restRouter, err := rest.MakeRouter(
+	// 	rest.Get("/v1/hello", helloRestHandler)
+	// )
+
+	restRouter, _ := api.NewRouter()
+
+	restAPI.SetApp(restRouter)
+
+	// fs := http.FileServer(http.Dir("static/"))
+	// http.Handle("/static/", http.StripPrefix("/static/", fs))
+
+	//mux := http.NewServeMux()
+	http.Handle("/v1/", http.StripPrefix("/v1", restAPI.MakeHandler()))
+	http.Handle("/ui/", http.StripPrefix("/ui", http.HandlerFunc(uiHandler)))
 	http.HandleFunc("/", uiHandler)
-	http.HandleFunc("/ui", uiHandler)
-	http.HandleFunc("/v1", restHandler)
+
 	if err := http.ListenAndServe(":9443", nil); err != nil {
 		return 1
 	}
@@ -67,7 +87,7 @@ func uiHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "<html><body><h1>%s</h1></body></html>", msg)
 }
 
-func restHandler(w http.ResponseWriter, r *http.Request) {
+func helloRestHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.Header().Set("Content-Encoding", "gzip")
 
