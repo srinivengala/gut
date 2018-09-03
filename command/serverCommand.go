@@ -1,15 +1,10 @@
 package command
 
 import (
-	"bytes"
-	"compress/gzip"
 	"flag"
 	"fmt"
-	"html"
-	"net/http"
 
-	"github.com/ant0ine/go-json-rest/rest"
-	"github.com/srinivengala/gut/api"
+	"github.com/srinivengala/gut/gut"
 
 	"github.com/mitchellh/cli" // command and subcommand commandline management
 )
@@ -50,69 +45,9 @@ func (c *serverCommand) Run(args []string) int {
 
 	c.UI.Output(fmt.Sprintf("Running server https://127.0.0.1:%d", c.HTTPPort))
 
-	restAPI := rest.NewApi()
-	//TODO api.Use(rest.DefaultProdStack...)
-	restAPI.Use(rest.DefaultDevStack...)
-
-	// restRouter, err := rest.MakeRouter(
-	// 	rest.Get("/v1/hello", helloRestHandler)
-	// )
-
-	restRouter, _ := api.NewRouter()
-
-	restAPI.SetApp(restRouter)
-
-	// fs := http.FileServer(http.Dir("static/"))
-	// http.Handle("/static/", http.StripPrefix("/static/", fs))
-
-	//mux := http.NewServeMux()
-	http.Handle("/v1/", http.StripPrefix("/v1", restAPI.MakeHandler()))
-	http.Handle("/ui/", http.StripPrefix("/ui", http.HandlerFunc(uiHandler)))
-	http.HandleFunc("/", uiHandler)
-
-	if err := http.ListenAndServe(":9443", nil); err != nil {
-		return 1
-	}
-	return 0
+	return gut.StartServer()
 }
 
 func (c *serverCommand) Synopsis() string {
 	return "starts server"
-}
-
-func uiHandler(w http.ResponseWriter, r *http.Request) {
-	msg := fmt.Sprintf(`Hello, %q<br>
-	<a href="http://localhost:9443/ui">http://localhost:9443/ui></a><br>
-	<a href="http://localhost:9443/v1">http://localhost:9443/v1></a>`, html.EscapeString(r.URL.Path))
-	fmt.Fprintf(w, "<html><body><h1>%s</h1></body></html>", msg)
-}
-
-func helloRestHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.Header().Set("Content-Encoding", "gzip")
-
-	writer, err := gzip.NewWriterLevel(w, gzip.BestCompression)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-	defer writer.Close()
-
-	body := []byte("{\"message\":\"Hi there\"}")
-	if _, err := writer.Write(body); err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	//fmt.Fprintf(w, &[]byte("{\"message\":\"Hi there\"}"))
-}
-
-func doGzip(a *[]byte) ([]byte, error) {
-	var b bytes.Buffer
-	gz, _ := gzip.NewWriterLevel(&b, gzip.BestSpeed)
-	defer gz.Close()
-	if _, err := gz.Write(*a); err != nil {
-		return nil, err
-	}
-	return b.Bytes(), nil
 }
