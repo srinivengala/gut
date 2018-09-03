@@ -4,9 +4,8 @@ import (
 	"flag"
 	"fmt"
 
-	"github.com/srinivengala/gut/gut"
-
 	"github.com/mitchellh/cli" // command and subcommand commandline management
+	"github.com/srinivengala/gut/ui"
 )
 
 // implements interface cli.Command
@@ -45,7 +44,7 @@ func (c *serverCommand) Run(args []string) int {
 
 	c.UI.Output(fmt.Sprintf("Running server https://127.0.0.1:%d", c.HTTPPort))
 
-	return gut.StartServer()
+	return ui.StartServer()
 }
 
 func (c *serverCommand) Synopsis() string {

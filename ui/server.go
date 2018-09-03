@@ -1,11 +1,11 @@
-package gut
+package ui
 
 import (
 	"bytes"
 	"compress/gzip"
 	"net/http"
 
-	"github.com/srinivengala/gut/ui"
+	"github.com/GeertJohan/go.rice"
 
 	"github.com/ant0ine/go-json-rest/rest"
 	"github.com/srinivengala/gut/api"
@@ -31,8 +31,13 @@ func StartServer() int {
 	//mux := http.NewServeMux()
 	//NOTE: ending with slash is important
 	http.Handle("/v1/", http.StripPrefix("/v1", restAPI.MakeHandler()))
-	http.Handle("/ui/", http.StripPrefix("/ui", http.HandlerFunc(ui.Handler)))
-	http.HandleFunc("/", ui.Handler)
+	http.Handle("/ui/", http.StripPrefix("/ui", http.HandlerFunc(Handler)))
+
+	//rice embed-go
+	//go install
+	box := rice.MustFindBox("web/dev/assets/")
+	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(box.HTTPBox())))
+	http.HandleFunc("/", Handler)
 
 	if err := http.ListenAndServe(":9443", nil); err != nil {
 		return 1
