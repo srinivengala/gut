@@ -25,20 +25,18 @@ func StartServer() int {
 
 	restAPI.SetApp(restRouter)
 
-	// fs := http.FileServer(http.Dir("static/"))
-	// http.Handle("/static/", http.StripPrefix("/static/", fs))
-
 	//mux := http.NewServeMux()
 	//NOTE: ending with slash is important
 	http.Handle("/v1/", http.StripPrefix("/v1", restAPI.MakeHandler()))
 	http.Handle("/ui/", http.StripPrefix("/ui", http.HandlerFunc(Handler)))
 
-	//rice embed-go
+	//cd ui && rice -v embed-go && cd ..
 	//go install
-	box := rice.MustFindBox("web/dev/assets/")
+	box := rice.MustFindBox("dev/assets/")
 	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(box.HTTPBox())))
 	http.HandleFunc("/", Handler)
 
+	//TODO http.ListenAndServeTLS
 	if err := http.ListenAndServe(":9443", nil); err != nil {
 		return 1
 	}
