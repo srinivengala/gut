@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"compress/gzip"
 	"net/http"
+	"strings"
 
 	"github.com/GeertJohan/go.rice"
 
@@ -33,7 +34,7 @@ func StartServer() int {
 	//cd ui && rice -v embed-go && cd ..
 	//go install
 	box := rice.MustFindBox("dev/assets/")
-	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(box.HTTPBox())))
+	http.Handle("/assets/", http.StripPrefix("/assets/", filterDirectoryListing(http.FileServer(box.HTTPBox()))))
 	http.HandleFunc("/", Handler)
 
 	//TODO http.ListenAndServeTLS
@@ -41,6 +42,17 @@ func StartServer() int {
 		return 1
 	}
 	return 0
+}
+
+func filterDirectoryListing(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if strings.HasSuffix(r.URL.Path, "/") {
+			http.NotFound(w, r)
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	})
 }
 
 // func helloRestHandler(w http.ResponseWriter, r *http.Request) {
