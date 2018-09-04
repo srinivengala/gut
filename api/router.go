@@ -7,7 +7,10 @@ func NewRouter() (rest.App, error) {
 
 	var restRoutes []*rest.Route
 
-	for _, route := range routesInstance {
+	api := NewAPI()
+
+	routes := NewRoutes(api)
+	for _, route := range *routes {
 		var handler rest.HandlerFunc
 		//TODO add context
 		handler = route.HandlerFunc
