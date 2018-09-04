@@ -29,13 +29,13 @@ func StartServer() int {
 	//mux := http.NewServeMux()
 	//NOTE: ending with slash is important
 	http.Handle("/v1/", http.StripPrefix("/v1", restAPI.MakeHandler()))
-	http.Handle("/ui/", http.StripPrefix("/ui", http.HandlerFunc(Handler)))
 
 	//cd ui && rice -v embed-go && cd ..
 	//go install
-	box := rice.MustFindBox("dev/assets/")
-	http.Handle("/assets/", http.StripPrefix("/assets/", filterDirectoryListing(http.FileServer(box.HTTPBox()))))
-	http.HandleFunc("/", Handler)
+	box := rice.MustFindBox("web/")
+	webHandler := filterDirectoryListing(http.FileServer(box.HTTPBox()))
+	http.Handle("/ui/", http.StripPrefix("/ui/", webHandler))
+	http.HandleFunc("/", redirect)
 
 	//TODO http.ListenAndServeTLS
 	if err := http.ListenAndServe(":9443", nil); err != nil {
@@ -53,6 +53,11 @@ func filterDirectoryListing(next http.Handler) http.Handler {
 
 		next.ServeHTTP(w, r)
 	})
+}
+
+func redirect(w http.ResponseWriter, r *http.Request) {
+
+	http.Redirect(w, r, "/ui/index.html", 301)
 }
 
 // func helloRestHandler(w http.ResponseWriter, r *http.Request) {
