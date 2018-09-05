@@ -1,12 +1,7 @@
 package ui
 
 import (
-	"bytes"
-	"compress/gzip"
 	"net/http"
-	"strings"
-
-	"github.com/GeertJohan/go.rice"
 
 	"github.com/ant0ine/go-json-rest/rest"
 	"github.com/srinivengala/gut/api"
@@ -18,74 +13,21 @@ func StartServer() int {
 	//TODO api.Use(rest.DefaultProdStack...)
 	restAPI.Use(rest.DefaultDevStack...)
 
-	// restRouter, err := rest.MakeRouter(
-	// 	rest.Get("/v1/hello", helloRestHandler)
-	// )
-
 	restRouter, _ := api.NewRouter()
 
 	restAPI.SetApp(restRouter)
 
-	//mux := http.NewServeMux()
-	//NOTE: ending with slash is important
 	http.Handle("/v1/", http.StripPrefix("/v1", restAPI.MakeHandler()))
 
-	//cd ui && rice -v embed-go && cd ..
-	//go install
-	box := rice.MustFindBox("web/")
-	webHandler := filterDirectoryListing(http.FileServer(box.HTTPBox()))
-	http.Handle("/ui/", http.StripPrefix("/ui/", webHandler))
-	http.HandleFunc("/", redirect)
+	webUI := NewUI()
+
+	//NOTE: ending with slash is important
+	http.Handle("/ui/", http.StripPrefix("/ui/", webUI.WebFolderHandler()))
+	http.Handle("/", webUI.Redirect())
 
 	//TODO http.ListenAndServeTLS
 	if err := http.ListenAndServe(":9443", nil); err != nil {
 		return 1
 	}
 	return 0
-}
-
-func filterDirectoryListing(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if strings.HasSuffix(r.URL.Path, "/") {
-			http.NotFound(w, r)
-			return
-		}
-
-		next.ServeHTTP(w, r)
-	})
-}
-
-func redirect(w http.ResponseWriter, r *http.Request) {
-
-	http.Redirect(w, r, "/ui/index.html", 301)
-}
-
-// func helloRestHandler(w http.ResponseWriter, r *http.Request) {
-// 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-// 	w.Header().Set("Content-Encoding", "gzip")
-
-// 	writer, err := gzip.NewWriterLevel(w, gzip.BestCompression)
-// 	if err != nil {
-// 		w.WriteHeader(http.StatusInternalServerError)
-// 		return
-// 	}
-// 	defer writer.Close()
-
-// 	body := []byte("{\"message\":\"Hi there\"}")
-// 	if _, err := writer.Write(body); err != nil {
-// 		w.WriteHeader(http.StatusInternalServerError)
-// 		return
-// 	}
-
-// 	//fmt.Fprintf(w, &[]byte("{\"message\":\"Hi there\"}"))
-// }
-
-func doGzip(a *[]byte) ([]byte, error) {
-	var b bytes.Buffer
-	gz, _ := gzip.NewWriterLevel(&b, gzip.BestSpeed)
-	defer gz.Close()
-	if _, err := gz.Write(*a); err != nil {
-		return nil, err
-	}
-	return b.Bytes(), nil
 }
