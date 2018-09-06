@@ -59,3 +59,5 @@ EOF
 vue create --no-git --preset ./vue-preset.json gut
 cd gut
 npm run serve
+npm run build // for production build
+
