@@ -39,15 +39,16 @@ func (u *UI) Index() http.Handler {
 	})
 }
 
-//WebFolder serves files in web folder
+//WebFolderHandler serves files in web folder
 func (u *UI) WebFolderHandler() http.Handler {
-	box := rice.MustFindBox("web/")
+	box := rice.MustFindBox("web/gut/dist/")
 	return u.filterDirectoryListing(http.FileServer(box.HTTPBox()))
 }
 
 func (u *UI) filterDirectoryListing(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if strings.HasSuffix(r.URL.Path, "/") {
+			//fmt.Fprintf(w, "Page : %s", r.URL.Path)
 			//http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 			http.NotFound(w, r)
 			return

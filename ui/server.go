@@ -13,7 +13,8 @@ func StartServer() int {
 	//TODO api.Use(rest.DefaultProdStack...)
 	restAPI.Use(rest.DefaultDevStack...)
 
-	restRouter, _ := api.NewRouter()
+	a := api.NewAPI()
+	restRouter, _ := a.MakeRouter()
 
 	restAPI.SetApp(restRouter)
 
@@ -22,7 +23,7 @@ func StartServer() int {
 	webUI := NewUI()
 
 	//NOTE: ending with slash is important
-	http.Handle("/ui/", http.StripPrefix("/ui/web/dist/", webUI.WebFolderHandler()))
+	http.Handle("/ui/", http.StripPrefix("/ui/", webUI.WebFolderHandler()))
 	http.Handle("/", webUI.Redirect())
 
 	//TODO http.ListenAndServeTLS

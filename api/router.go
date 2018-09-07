@@ -2,15 +2,12 @@ package api
 
 import "github.com/ant0ine/go-json-rest/rest"
 
-// NewRouter creates a rest router
-func NewRouter() (rest.App, error) {
+// Router creates a rest router
+func (a *API) MakeRouter() (rest.App, error) {
 
 	var restRoutes []*rest.Route
 
-	api := NewAPI()
-
-	routes := NewRoutes(api)
-	for _, route := range *routes {
+	for _, route := range *a.Routes() {
 		var handler rest.HandlerFunc
 		//TODO add context
 		handler = route.HandlerFunc
