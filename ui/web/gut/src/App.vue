@@ -17,9 +17,7 @@
       </nav>
     </div>
     <main class="mdl-layout__content">
-      <div class="page-content">
-        <router-view></router-view>
-      </div>
+      <router-view></router-view>
     </main>
   </div>
 </template>
@@ -48,11 +46,11 @@
 //   text-align center
 //   color #2c3e50
 
-#nav
-  padding 30px
-  a
-    font-weight bold
-    color #2c3e50
-    &.router-link-exact-active
-      color #42b983
+//#nav
+//  padding 30px
+//  a
+//    font-weight bold
+//    color #2c3e50
+//    &.router-link-exact-active
+//      color #42b983
 </style>
